@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootswatch@4.6.1",
+      "destination": "wwwroot/lib/bootswatch/",
+      "files": [
+        "sketchy/bootstrap.min.css"
+      ]
+    }
+  ]
+}
