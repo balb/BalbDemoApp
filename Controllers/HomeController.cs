@@ -33,5 +33,13 @@ namespace BalbDemoApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult DoBadThing()
+        {
+            var x = 1;
+            x--;
+            var y = 1 / x;
+            return Content("Hello " + y);
+        }
     }
 }
