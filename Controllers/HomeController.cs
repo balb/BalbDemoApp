@@ -41,5 +41,27 @@ namespace BalbDemoApp.Controllers
             var y = 1 / x;
             return Content("Hello " + y);
         }
+
+        public IActionResult HtmxTest()
+        {
+            return View();
+        }
+
+        public IActionResult SimplePartial()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public IActionResult EditPersonPartial(Person person)
+        {
+            if (person.Name != "Mark")
+            {
+                ModelState.AddModelError("Name", "I don't like your name");
+                return PartialView();
+            }
+
+            return PartialView("ThanksPartial");
+        }
     }
 }

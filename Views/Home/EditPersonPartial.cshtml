@@ -1,0 +1,53 @@
+﻿@model BalbDemoApp.Models.Person
+
+<form hx-post="EditPersonPartial" id="frmEditPersonPartial">
+    <h4>Person</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label"></label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" id="btnSubmit" />
+            </div>
+
+        </div>
+    </div>
+</form>
+@if (!this.ViewContext.ModelState.IsValid)
+{
+    <script>
+        // Need to reinitialize validation after post-back
+        var form = $("#frmEditPersonPartial")
+            .removeData("validator") /* added by the raw jquery.validate plugin */
+            .removeData("unobtrusiveValidation");  /* added by the jquery unobtrusive plugin*/
+
+        $.validator.unobtrusive.parse(form);
+    </script>
+}
+
+<script>
+    document.getElementById("frmEditPersonPartial").addEventListener("htmx:beforeRequest", function (evt) {
+        if ($(evt.target).valid()) {
+            // Disable submit button while submitting
+            document.getElementById("btnSubmit").disabled = true;
+        } else {
+            // Cancel the event as the form is invalid
+            evt.preventDefault();
+        }
+    });
+</script>
