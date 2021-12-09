@@ -41,6 +41,8 @@
 }
 
 <script>
+    // TODO: Does this need to be called on form reload?
+    // TODO: Should we call validator.destroy()? is there a unobtrusiveValidation equivalent?
     document.getElementById("frmEditPersonPartial").addEventListener("htmx:beforeRequest", function (evt) {
         if ($(evt.target).valid()) {
             // Disable submit button while submitting
