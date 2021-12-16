@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,11 +26,21 @@ namespace BalbDemoApp
         {
             services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation();
+
+            // LINUX: ForwardedHeaders
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders =
+                    ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // LINUX: ForwardedHeaders
+            app.UseForwardedHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -41,12 +52,7 @@ namespace BalbDemoApp
                 app.UseHsts();
             }
 
-            if (env.IsDevelopment())
-            {
-                // LINUX: Don't do HttpsRedirection in prod as app is behind a load balancer
-                app.UseHttpsRedirection();
-            }
-            
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
